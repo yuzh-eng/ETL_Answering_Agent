@@ -93,7 +93,7 @@ code_input = st.text_area("Code Editor", key="code_content", height=200)
 col1, col2 = st.columns([1, 1])
 
 with col1:
-    if st.button("Submit Answer", type="primary"):
+    def on_submit_click():
         user_code = st.session_state['code_content']
         current_pattern = st.session_state['current_pattern']
         question_code = st.session_state['current_question']
@@ -113,12 +113,24 @@ with col1:
             ai_feedback=feedback,
             is_correct=is_correct
         )
+        
+        # Store result in session state to display after rerun/callback
+        st.session_state['last_result'] = {
+            'is_correct': is_correct,
+            'feedback': feedback
+        }
 
-        if is_correct:
-            st.success(feedback)
+    st.button("Submit Answer", type="primary", on_click=on_submit_click)
+
+    if 'last_result' in st.session_state:
+        result = st.session_state['last_result']
+        if result['is_correct']:
+            st.success(result['feedback'])
             st.balloons()
         else:
-            st.error(feedback)
+            st.error(result['feedback'])
+        # Clear result after showing (optional, depending on UX preference)
+        # del st.session_state['last_result']
 
 with col2:
     def on_generate_click():
