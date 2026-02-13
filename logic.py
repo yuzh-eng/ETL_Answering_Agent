@@ -175,7 +175,7 @@ def check_answer_with_ai(api_key, pattern_type, question_code, user_code):
     try:
         response = client.messages.create(
             model=MINIMAX_MODEL,
-            max_tokens=1000,
+            max_tokens=4000,
             system="你是一个严格的代码审核员 (Code Reviewer)。",
             messages=[
                 {"role": "user", "content": prompt}
@@ -183,7 +183,10 @@ def check_answer_with_ai(api_key, pattern_type, question_code, user_code):
         )
         result = extract_text_content(response).strip()
         
-        if result.startswith("PASS"):
+        # Log the raw result for debugging
+        print(f"[DEBUG] AI Check Result: {result}")
+        
+        if "PASS" in result[:20]: # Check if PASS is at the start, allowing for some whitespace/Thinking prefix if leaked
             return True, "✅ " + result
         else:
             return False, result
