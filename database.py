@@ -30,7 +30,7 @@ def save_training_log(user_id, pattern_type, question_code, user_code, ai_feedba
     c.execute('''
         INSERT INTO training_logs (user_id, pattern_type, question_code, user_code, ai_feedback, is_correct, created_at)
         VALUES (?, ?, ?, ?, ?, ?, ?)
-    ''', (user_id, pattern_type, question_code, user_code, ai_feedback, is_correct, datetime.datetime.now()))
+    ''', (user_id, pattern_type, question_code, user_code, ai_feedback, is_correct, datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")))
     conn.commit()
     conn.close()
 

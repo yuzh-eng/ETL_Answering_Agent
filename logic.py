@@ -146,12 +146,21 @@ def check_answer_with_ai(api_key, pattern_type, question_code, user_code):
     
     请判断：
     1. 如果符合所有规范，返回 'PASS'。
-    2. 如果有遗漏，返回 'FAIL' 并用中文解释原因。
+    2. 如果有遗漏，返回 'FAIL' 并给出详细原因。
     
-    请只返回状态和原因，格式如下：
-    PASS
-    (或)
-    FAIL: 原因说明...
+    如果是 FAIL，请严格按照以下格式返回（不要包含 markdown 代码块标记）：
+    FAIL: 原因说明：
+    [错误位置/类型] ：[详细解释，指出哪里错了]
+    [规范建议] ：[正确的做法是什么]
+    按照规范，完整的迁移应该是：
+    [正确代码片段]
+
+    例如：
+    FAIL: 原因说明：
+    WHERE 子句中的 TO_DATE 未转换 ：用户只转换了 SELECT 子句，但遗漏了 WHERE 子句中的 TO_DATE。
+    函数参数顺序问题 ：Snowflake 的 TO_TIMESTAMP_NTZ 不接收第二个 format 参数。
+    按照规范，完整的迁移应该是：
+    SELECT TO_TIMESTAMP_NTZ(t.order_date) ...
     """
 
     try:
