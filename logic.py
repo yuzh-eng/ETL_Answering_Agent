@@ -151,10 +151,14 @@ def check_answer_with_ai(api_key, pattern_type, question_code, user_code):
     规范列表：
     - Oracle TO_DATE -> Snowflake TO_TIMESTAMP_NTZ
     - 全角符号 ＝＞（） -> 半角 ASCII
-    - 空字符串 "" -> 必须显式转为 SetNull() 或 IsNull() 判断
+    - 空字符串 "" -> 必须转换为 NULL。请接受以下任意一种实现方式：
+        1. 使用 NULLIF(col, '') (推荐)
+        2. 使用 IFF(col = '', NULL, col)
+        3. 使用 CASE WHEN col = '' THEN NULL ELSE col END
+        4. 使用 SetNull() 或 IsNull() (仅限遗留 DataStage 逻辑)
     
     请判断：
-    1. 如果符合所有规范，返回 'PASS'。
+    1. 如果符合所有规范（只要使用了上述任意一种空字符串处理方式均算通过），返回 'PASS'。
     2. 如果有遗漏，返回 'FAIL' 并给出详细原因。
     
     如果是 FAIL，请严格按照以下格式返回（不要包含 markdown 代码块标记）：
