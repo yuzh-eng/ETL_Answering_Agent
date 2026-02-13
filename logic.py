@@ -177,7 +177,7 @@ def check_answer_with_ai(api_key, pattern_type, question_code, user_code):
         if result.startswith("PASS"):
             return True, "✅ " + result
         else:
-            return False, "❌ " + result
+            return False, result
             
     except Exception as e:
         return False, f"AI Review Error: {str(e)}"
