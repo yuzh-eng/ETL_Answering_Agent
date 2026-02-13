@@ -55,6 +55,15 @@ def extract_text_content(message):
     for block in message.content:
         if block.type == 'text':
             content += block.text
+        elif block.type == 'thinking':
+            # Optionally log thinking blocks for debug, but don't show to user unless requested
+            print(f"[DEBUG] Thinking: {block.thinking}")
+    
+    if not content:
+        # Fallback: if no text block found, try to dump the whole message content for debugging
+        print(f"[DEBUG] No text block found. Message content: {message.content}")
+        return "⚠️ AI returned no text response. Please check logs."
+        
     return content
 
 def generate_question(pattern_type):
