@@ -5,7 +5,7 @@ import anthropic
 # Minimax Configuration
 # Using the Domestic Version Endpoint (Anthropic Compatible)
 MINIMAX_BASE_URL = "https://api.minimaxi.com/anthropic" 
-MINIMAX_MODEL = "MiniMax-M2.1" 
+MINIMAX_MODEL = "MiniMax-M2.5" 
 
 PATTERNS = {
     "P1": "日期函数转换 (TO_DATE -> TO_TIMESTAMP_NTZ)",
